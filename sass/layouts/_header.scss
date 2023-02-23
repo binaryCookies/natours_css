@@ -1,0 +1,87 @@
+/* cover: try to fit the element in the box */
+.header {
+  height: 85vh;
+  /* gradient to right bottom, 2 images: linear grad, url(../) */
+  background-image: linear-gradient(
+      to right bottom,
+      rgba($color-primary-light, 0.8),
+      rgba($color-primary-dark, 0.8)
+    ),
+    url(../img/hero-small.jpg);
+
+  background-size: cover;
+  background-position: top;
+  /* define coordinates of a polygon, starting left top, and then define each corner going clockwise */
+  /* Triangle */
+  /* clip-path: polygon(50% 0, 100% 100%, 0 100%, 0 100%); */
+
+  /* vh set the height dynamic to viewport height */
+
+  /* clip-path: polygon(x y, x y, x y); */
+
+  // 64.
+  @supports (clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)) {
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+    height: 95vh;
+  }
+
+  /* 7. set to relative so .logo-box has a reference  */
+  position: relative;
+
+  // 63. Responsive images CSS
+  // When resolution greater than 192dpi
+  // AND width is larger than 600px then code-block executes
+  // logic so the responsive images work on Safari
+  @media only screen and (min-resolution: 192dpi) and (min-width: 37.5em),
+    only screen and (min-width: 125em),
+    only screen and (-webit-min-device-pixel-ratio: 2),
+    only screen and (min-width: 125em),
+    only screen and (min-width: 37.5em) {
+    background-image: linear-gradient(
+        to right bottom,
+        rgba($color-secondary-light, 0.8),
+        rgba($color-secondary-dark, 0.8)
+      ),
+      url(../img/hero-small.jpg);
+  }
+
+  // @media (min-width: 2000px) {
+  //   background-image: linear-gradient(
+  //       to right bottom,
+  //       rgba($color-secondary-light, 0.8),
+  //       rgba($color-secondary-dark, 0.8)
+  //     ),
+  //     url(../img/hero.jpg);
+  // }
+
+  // 57. fix polygone slope on header
+  @include respond(phone) {
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+  }
+
+  /* 7. Icon logo, 31.  nesting elements */
+  &__logo-box {
+    position: absolute;
+    top: 4rem;
+    left: 4rem;
+  }
+
+  &__logo {
+    height: 3.5rem;
+  }
+
+  /* Centering header. text box top and left in relation to parent el, translate in relation to element itself */
+  &__text-box {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* 9. center button which is treated as text */
+    text-align: center;
+  }
+}
+.header__logo-box:hover .logo {
+  animation: moveInRight 0.6s ease-in;
+}

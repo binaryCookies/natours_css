@@ -1,0 +1,109 @@
+// 43.
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+  background-color: rgba($color-white, 60%);
+  border-radius: 3px;
+  padding: 6rem;
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+
+  // 59.
+  @include respond(tab-port) {
+    width: 100%;
+    padding: 4rem;
+    padding-left: 7rem;
+  }
+
+  @include respond(phone) {
+    transform: skew(0);
+  }
+
+  &__shape {
+    content: " ";
+    // start with a square
+    width: 15rem;
+    height: 15rem;
+
+    float: left;
+    // define vectorised shape,
+    // element must be floated and have defiened dimensions
+    // for shape-outside to work
+    // 1st arg radius
+    -webkit-shape-outside: circle(50% at 50% 50%);
+    shape-outside: circle(50% at 50% 50%);
+
+    // at time of recording
+    // multiple transform on one element is not possible
+    // NOTE use transform to move around elements that are floated (better than margin)
+    transform: translateX(-3rem) skewX(12deg);
+    // 42. make relative for the &__caption position absolute to work
+    position: relative;
+    // 64.
+    overflow: hidden;
+    border-radius: 50%;
+
+    // 59.
+    @include respond(phone) {
+      transform: translateX(-3rem) skew(0);
+    }
+
+    // 64.
+    @supports (clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)) {
+      -webkit-clip-path: circle(50% at 50% 50%);
+      clip-path: circle(50% at 50% 50%);
+      // turn square to circle
+      -webkit-clip-path: circle(50% at 50% 50%);
+      clip-path: circle(50% at 50% 50%);
+      border-radius: none;
+    }
+  }
+
+  // height is 100% of the &__shape width
+  &__img {
+    // this transition fixed the bug on hover
+    // transition did not work after hover state
+    transition: transform 0.5s;
+    height: 100%;
+    transform: translateX(-4rem) scale(1.4);
+    backface-visibility: hidden;
+  }
+
+  &__text {
+    transform: skewX(12deg);
+    // 59.
+    @include respond(phone) {
+      transform: skew(0);
+    }
+  }
+
+  // position caption dead center
+  &__caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    color: $color-white;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s;
+    // fix shaky glitch
+    backface-visibility: hidden;
+  }
+
+  &:hover &__caption {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover &__img {
+    transform: translateX(-4rem) scale(1);
+    // filters, blur and reduce brightness (make img darker)
+    filter: blur(3px) brightness(80%);
+    transition: all 0.5s;
+  }
+}
